@@ -1,0 +1,33 @@
+version: '3'
+
+volumes:
+  serverdatabase:
+    driver: local
+###########################################
+# Setup the Apache/PHP/Composer container #
+###########################################
+services:
+  service_api_rest:
+    container_name: service_api_rest
+    build:
+      context: ./docker
+      dockerfile: DockerFile
+    ports:
+      - 8081:80
+    volumes:
+      - ./www:/var/www/html:cached
+      - ./docker/vhost/:/etc/apache2/sites-enabled/
+  service_api_bdd:
+    container_name: service_api_bdd
+    restart: 'no'
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: servermysql
+      MYSQL_USER: servermysql
+      MYSQL_PASSWORD: servermysql
+    volumes:
+      - serverdatabase:/var/lib/mysql
+

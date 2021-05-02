@@ -1,0 +1,44 @@
+FROM php:8.0.0-apache
+
+MAINTAINER philippe lam <philippe.lam.ny@gmail.com>
+
+RUN apt-get update 
+
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN curl -sS https://getcomposer.org/installer | php
+
+RUN mv composer.phar /usr/local/bin/composer
+
+RUN chmod +x /usr/local/bin/composer
+
+RUN composer self-update
+
+RUN docker-php-ext-install mysqli 
+
+RUN docker-php-ext-install bcmath
+
+RUN apt-get install -y libxml2-dev
+
+
+RUN apt-get update
+
+RUN apt-get install nodejs -y
+
+RUN cd ~
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
+
+RUN sh nodesource_setup.sh
+
+RUN apt-get install nodejs -y
+
+RUN apt-get update
+
+RUN apt-get install git -y
+
+RUN apt-get install --yes zip unzip apt-utils
+
+RUN a2enmod rewrite
+
+RUN service apache2 restart
